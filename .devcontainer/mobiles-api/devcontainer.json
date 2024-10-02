@@ -1,0 +1,44 @@
+{
+  "name": "mobile-api-devcontainer",
+  "dockerComposeFile": [
+    "docker-compose.devcontainer.yml", // trick to have  --project-directory on the same directory of docker-compose.yml
+    "../../mobiles-api/docker-compose.local.yml",
+    "docker-compose.devcontainer.yml" // need to be last added to override values from docker-compose.local.yml
+  ],
+  "service": "mobiles-api-node",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "eamodio.gitlens",
+        "gruntfuggly.todo-tree",
+        "esbenp.prettier-vscode",
+        "ryanluker.vscode-coverage-gutters",
+        "sonarsource.sonarlint-vscode",
+        "mutantdino.resourcemonitor"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": false,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit",
+          "source.sortMembers": "explicit",
+          "source.sortImports": "explicit"
+        },
+        "editor.rulers": [130],
+        "prettier.printWidth": 130,
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "sonarlint.ls.javaHome": "/usr/lib/jvm/java-17-openjdk",
+        "sonarlint.connectedMode.project": {
+          "connectionId": "shopopop",
+          "projectKey": "Shopopop_mobiles-api"
+        }
+      }
+    }
+  },
+  "remoteUser": "node",
+  "workspaceFolder": "/home/node/workspace",
+  "initializeCommand": "./.devcontainer/mobiles-api/initialize-command.sh",
+  "postStartCommand": "./.devcontainer/post-start-command.sh",
+  // "postAttachCommand": "yarn dev",
+  "shutdownAction": "stopCompose"
+}

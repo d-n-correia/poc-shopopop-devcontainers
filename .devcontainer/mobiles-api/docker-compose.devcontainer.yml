@@ -1,0 +1,26 @@
+services:
+  mobiles-api-redis:
+    env_file: 
+      - ./../../mobiles-api/.env.local
+      - .env
+  
+  mobiles-api-postgres:
+    env_file: 
+      - ./../../mobiles-api/.env.local
+      - .env
+
+  mobiles-api-node:
+    build:
+      context: .
+      dockerfile: ./../../mobiles-api/docker/Dockerfile
+      target: devcontainer
+      args:
+        - NPM_REGISTRY_TOKEN=${NPM_REGISTRY_TOKEN}
+    env_file: 
+      - ./../../mobiles-api/.env.local
+      - .env
+    volumes:
+      - $HOME/.ssh:/home/node/.ssh:cached
+      - ./../../mobiles-api:/home/node/workspace
+    stdin_open: true
+    tty: true
