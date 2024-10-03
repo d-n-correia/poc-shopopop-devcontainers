@@ -79,13 +79,13 @@ ensure_git_install() {
             echo "Unsupported operating system. Exiting."
             exit 1
         fi
+
+        read -p "Enter your username for git : " username
+        read -p "Enter your email for git : " email 
+
+        git config --global user.name "$username"
+        git config --global user.email $email
     fi
-
-    read -p "Enter your username for git : " username
-    read -p "Enter your email for git : " email 
-
-    git config --global user.name "$username"
-    git config --global user.email $email
 }
 
 ensure_ssh_key_exist() {
@@ -118,15 +118,29 @@ ensure_ssh_key_exist() {
     fi
 }
 
+ensure_jq() {
+    if ! command -v jq &> /dev/null; then
+        if [[ $CURRENT_OS == $LINUX_GNU_OS ]]; then 
+            apt update && apt install jq -y
+        elif [[ $CURRENT_OS == $MAC_OS ]]; then
+            brew install jq
+        else
+            echo "Unsupported operating system. Exiting."
+            exit 1
+        fi
+    fi
+}
+
 bootstrap() {
-    detect_os
-    ensure_curl_install
-
+    source_detected_os
+    
     if [[ $CURRENT_OS == $MAC_OS ]]; then ensure_brew_install; fi
-
+    
+    ensure_curl_install
     ensure_docker_install
     ensure_git_install
     ensure_ssh_key_exist
+    ensure_jq
 
     # Create network to interconnect Shopopop's project 
     docker network ls | grep shopopop_network > /dev/null || docker network create shopopop_network

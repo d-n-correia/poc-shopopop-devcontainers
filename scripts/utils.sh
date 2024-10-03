@@ -7,7 +7,7 @@ CURRENT_OS=""
 LINUX_GNU_OS="linux-gnu" # Ubuntu/Debian
 MAC_OS="macOS"
 
-detect_os() {
+source_detected_os() {
     if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         # Ubuntu/Debian
         if command -v lsb_release &> /dev/null && [[ "$(lsb_release -is)" == "Ubuntu" ]]; then
@@ -20,9 +20,6 @@ detect_os() {
     else
         OS_TYPE="Unknown"
     fi
-
-    # Afficher le résultat du type de système d'exploitation
-    echo "Le système d'exploitation détecté est : $OS_TYPE"
 }
 
 ensure_project_exist() {
